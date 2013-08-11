@@ -8,11 +8,16 @@
    (write-timestamp :initform 0 :accessor write-timestamp)))
 
 (defun open-bluetooth-nxt (device &key (if-does-not-exist :error))
-  (let ((connection (open device
-			  :direction :io
-			  :element-type  '(unsigned-byte 8)
-			  :if-does-not-exist if-does-not-exist
-			  :if-exists :overwrite)))
+  (let ((connection
+	  (open device
+		:direction :io
+		:element-type  '(unsigned-byte 8)
+		:if-does-not-exist if-does-not-exist
+		:if-exists :overwrite)
+	 #+nil
+	  (sb-bluetooth:open-rfcomm-channel
+	   "00:16:53:17:76:19" 1
+	   :element-type '(unsigned-byte 8))))
     (and connection
 	 (make-instance 'bluetooth-nxt :connection connection))))
 
